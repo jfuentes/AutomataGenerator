@@ -12,18 +12,15 @@ public class Automata{
       LinkedList<Integer> rules = getRules(rule);
       int [] finalResult = new int[height];
       finalResult[0] = firstLine;
-      System.out.println(Integer.toBinaryString(firstLine));
       for(int i=1; i<height; i++){
         newLine=0;
         for(int j=30; j>0; j--){
           //for every 3-bit
           threeBit = firstLine >> j;
           result = pivot & threeBit;
-          System.out.print(Integer.toBinaryString(result)+ " ");
-          System.out.println();
           for(Integer r: rules){
             if(result==r){
-              newLine |= 1 <<j;
+              newLine |= 1 <<(j+1);
               break;
             }
           }
@@ -31,7 +28,6 @@ public class Automata{
         }
         finalResult[i]=newLine;
         firstLine = newLine;
-        System.out.println(Integer.toBinaryString(newLine));
       }
 
 
@@ -49,9 +45,21 @@ public class Automata{
       return rules;
     }
 
+    public static void printAutomata(int [] automata){
+      for(int i=0; i<automata.length; i++){
+        System.out.println(String.format("%32s", Integer.toBinaryString(automata[i])).replace(' ', '0'));
+      }
+    }
+
     public static void main(String [] args){
+      if(args.length==0){
+        System.out.println("Rule number is missing. Please use: $java Automata ruleNumber");
+        System.exit(1);
+      }
+      int rule = Integer.parseInt(args[0]);
       int firstLine = 0;
       firstLine |= 1<<16;
-      generator(30, 4, firstLine);
+      int [] automata = generator(rule, 16, firstLine);
+      printAutomata(automata);
     }
 }
