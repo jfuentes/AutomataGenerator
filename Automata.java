@@ -6,7 +6,6 @@ public class Automata{
       int pivot = 7; // pivot 111
       int result = 0;
       int threeBit = 0;
-      int line = firstLine;
       int newLine;
 
       LinkedList<Integer> rules = getRules(rule);
